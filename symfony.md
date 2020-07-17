@@ -35,6 +35,17 @@ php bin/console make:migration
 php bin/console doctrine:migrations:migrate
 ```
 
+_Migrate 特定 migration_
+```bash
+# -e test 等於 --env=test 環境設定
+php bin/console -e test doctrine:migrations:execute 'DoctrineMigrations\Version20200717040423'
+```
+_或是不製作 migration 直搗資料庫_
+```bash
+# -e test 等於 --env=test 環境設定
+php bin/console -e test doctrine:schema:create
+```
+
 ### Fixtures(); 製作假資料
 _install_
 ```bash
