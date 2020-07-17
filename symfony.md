@@ -259,7 +259,7 @@ return [
 
 ### liip/test-fixtures-bundle() 製作假資料;
 
-Fixture [參考](https://medium.com/@ger86/symfony-improving-your-tests-with-doctrinefixturesbundle-1a37b704ac05)
+
 
 步驟
 1. _安裝_
@@ -267,14 +267,24 @@ Fixture [參考](https://medium.com/@ger86/symfony-improving-your-tests-with-doc
 composer require liip/test-fixtures-bundle
 ```
 
-2. _改變設定 config/packages/test/framework.yaml_
+2. _改變設定_
+
+config/packages/test/framework.yaml_
 ```yaml
 liip_test_fixtures:
   cache_db:
     sqlite: liip_test_fixtures.services_database_backup.sqlite
 ```
+config/packages/test/doctrine.yaml
+```yaml
+doctrine:
+  dbal:
+    driver: pdo_sqlite
+    path: "%kernel.project_dir%/var/data.db"
+    url: null
+```
 
-3. 測試檔，再開 setUp 階段，產假資料
+3. 測試檔，setUp 階段，產假資料
 ```php
 
 use Liip\TestFixturesBundle\Test\FixturesTrait; // 注意這裡
@@ -296,6 +306,8 @@ class TradeControllerTest extends WebTestCase
   }
 ```
 
+文章 [參考](https://medium.com/@ger86/symfony-improving-your-tests-with-doctrinefixturesbundle-1a37b704ac05)
+
 ### 測試依賴登入時，若使用 security 登入
 
 _設定 security.yaml_
@@ -309,7 +321,7 @@ _測試檔內_
   public function setUp(): void
   {
     $this->client = static::createClient([], [
-      'PHP_AUTH_USER' => 'adminTest1',
+      'PHP_AUTH_USER' => 'admin1',
       'PHP_AUTH_PW' => '0000',
     ]);
   }
