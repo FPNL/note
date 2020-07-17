@@ -257,9 +257,10 @@ return [
 ]
 ```
 
+### 與資料庫互動
+https://symfony.com/doc/current/testing/database.html
+
 ### liip/test-fixtures-bundle() 製作假資料;
-
-
 
 步驟
 1. _安裝_
