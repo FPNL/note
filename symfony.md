@@ -135,3 +135,53 @@ composer require symfony/security-csrf
 ```bash
 composer require twig-bundle
 ```
+
+### Test(); 寫測試
+_install_
+```bash
+composer require --dev phpunit/phpunit ^8
+composer require --dev symfony/browser-kit symfony/css-selector
+composer require dama/doctrine-test-bundle liip/test-fixtures-bundle
+```
+
+PHP Storm 相關設定，[影片](https://www.youtube.com/watch?v=I7aGWO6K3Ho)
+
+`config/bundles.php`
+```php
+// 有時候 make 在 env=test 無法使用，記得要開啟權限
+return [
+  Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true, 'test' => true],
+]
+```
+
+製作假資料 Fixture [參考](https://medium.com/@ger86/symfony-improving-your-tests-with-doctrinefixturesbundle-1a37b704ac05)
+
+_部分需要登入的方法_
+```php
+  public function setUp(): void
+  {
+    $this->client = static::createClient([], [
+      'PHP_AUTH_USER' => 'adminTest1',
+      'PHP_AUTH_PW' => '0000',
+    ]);
+  }
+```
+若使用 security 登入
+```yaml
+# 記得加 http_basic
+    main:
+      http_basic: ~
+```
+_取得 doctrine_
+```php
+  public function setUp(): void
+  {
+    $kernel = self::bootKernel();
+
+    $this->em = $kernel->getContainer()
+      ->get('doctrine')
+      ->getManager();
+
+    $this->tradeRepository = $this->em->getRepository(TradeDetail::class);
+  }
+```
