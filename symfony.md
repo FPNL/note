@@ -1,5 +1,16 @@
 # PHP-Symfony 3.4 學習筆記
 
+## 零. Docker
+
+不要把 vendor 跟 cache 這兩個同步，反而把他們放到 volume ，可以加快速度，另外 cache 會有權限問題：
+```bash
+chown -R www-data:www-data app/cache
+chown -R www-data:www-data app/log
+```
+[執行速度參考](https://stackoverflow.com/questions/48846995/symfony-4-is-painfully-slow-in-dev),
+
+[權限參考](https://stackoverflow.com/questions/20127884/runtimeexception-unable-to-create-the-cache-directory-var-www-sonata-app-cach)
+
 ## 一. 安裝
 
 通常以下指令創造出來的專案版本為 FLEX 版本，FLEX 版本為最小化，採加法原理。
@@ -272,6 +283,7 @@ composer require liip/test-fixtures-bundle
 
 config/packages/test/framework.yaml_
 ```yaml
+# 這段快取設定有可能造成連續的測試失敗。若失敗可以跳過 快取設定
 liip_test_fixtures:
   cache_db:
     sqlite: liip_test_fixtures.services_database_backup.sqlite
